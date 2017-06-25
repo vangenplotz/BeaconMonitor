@@ -1,0 +1,10 @@
+{% import '_includes/forms' as forms %}
+
+{{ forms.textField({
+    label: "Secret"|t,
+    id: 'monitorSecret',
+    name: 'monitorSecret',
+    instructions : "Secret used to connect other sites to this monitoring site."|t,
+    value: settings.monitorSecret,
+    errors: settings.getErrors('monitorSecret')
+}) }}

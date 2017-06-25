@@ -1,0 +1,74 @@
+{% extends "_layouts/cp" %}
+
+{% set title = "Beacon monitor"|t %}
+
+{% set sites = craft.beaconMonitor.getSites() %}
+
+{% block main %}
+  <div class="grid" data-max-cols="3">
+    <div class="item" data-position="left" data-colspan="2">
+      <div class="pane last" id="sites">
+
+
+        <div class="elementindex">
+          <div class="tableview">
+            <table class="data fullwidth">
+              <thead>
+                <tr>
+                  <th scope="col">{{ 'Title'|t }}</th>
+                  <th scope="col">{{ 'Version'|t }}</th>
+                  <th scope="col">{{ 'Critical updates'|t }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for site in sites %}
+                  <tr class="beacon-row js-site" data-loading="true" data-index="{{ loop.index0 }}" data-url="{{ site.url }}" data-sitesecret="{{ site.secret }}">
+                    <td><a href="{{ site.url }}"><img class="beacon-row__favicon" src="https://www.google.com/s2/favicons?domain={{ site.url }}" width="16px" height="16px"> {{ site.name }}</a></td>
+                    <td class="beacon-row__loadable" id="js-siteversion-{{ loop.index0 }}"><span class="loader"></span></td>
+                    <td class="beacon-row__loadable" id="js-criticalversions-{{ loop.index0 }}"><span class="loader"></span></td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item last" data-position="right">
+      <div class="pane lightpane meta">
+        <div class="field">
+          <div class="heading">{{ 'Monitor URL'|t }}</div>
+          <div class="input ltr"><input class="text fullwidth js-readonlytext" type="text" value="{{ siteUrl }}" readonly></div>
+        </div>
+        <div class="field">
+          <div class="heading">{{ 'Monitor secret'|t }}</div>
+          <div class="input ltr"><input class="text fullwidth js-readonlytext" type="text" value="{{ craft.beaconMonitor.getSecret }}" readonly></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% includeJsFile resourceUrl("beaconmonitor/js/checkstatuses.js") %}
+
+{% set beaconListCss %}
+  .beacon-row[data-loading=true] .beacon-row__loadable {
+    background-image: url({{ resourceUrl('images/spinner_2x.gif&x=FisDeUMwX') }});
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: 16px 5px;
+  }
+
+  .beacon-row__favicon {
+    margin-bottom: -4px;
+  }
+{% endset %}
+
+{% set beaconListJS %}
+  $('.js-readonlytext').focus(function() { $(this).select(); });
+{% endset %}
+
+{% includeCss beaconListCss %}
+{% includeJs beaconListJS %}
