@@ -22,7 +22,6 @@ class BeaconMonitorService extends BaseApplicationComponent
 		$criteria->order = 'name DESC';
 
 		return BeaconMonitor_SiteRecord::model()->findAll($criteria);
-		return Array();
 	}
 
 	public function getByUrl($sUrl)
