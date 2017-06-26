@@ -19,7 +19,7 @@ class BeaconMonitorService extends BaseApplicationComponent
 	public function getAllSites()
 	{
 		$criteria = new \CDbCriteria;
-		$criteria->order = 'name DESC';
+		$criteria->order = 'name ASC';
 
 		return BeaconMonitor_SiteRecord::model()->findAll($criteria);
 	}
